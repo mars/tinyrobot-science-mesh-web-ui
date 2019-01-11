@@ -16,6 +16,12 @@
   "buildpacks": [
     {
       "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku-community/kong"
+    },
+    {
+      "url": "https://github.com/danp/heroku-buildpack-runit"
     }
   ]
 }

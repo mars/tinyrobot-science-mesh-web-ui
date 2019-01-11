@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# bin/start-app
+
+set -e
+
+export PORT=5000
+
+npm start

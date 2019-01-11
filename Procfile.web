@@ -1,0 +1,2 @@
+mesh: bin/start-mesh
+app: bin/start-app

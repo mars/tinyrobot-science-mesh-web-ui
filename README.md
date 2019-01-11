@@ -26,3 +26,21 @@ cd tinyrobot-science-web-ui/
 npm install
 API_URL=http://127.0.0.1:5001 npm run dev
 ```
+
+## Mesh deployment
+
+First, [deploy a Kong app](https://github.com/heroku/heroku-kong) as the mesh controller.
+
+Then, deploy this app:
+
+```bash
+heroku create tinyrobot-science-mesh-web-ui
+heroku buildpacks:add heroku/nodejs
+heroku buildpacks:add heroku-community/kong
+heroku buildpacks:add https://github.com/danp/heroku-buildpack-runit
+
+# Attach the ID of the mesh controller's Postgres add-on.
+heroku addons:attach postgresql-cylindrical-98791
+
+git push heroku master
+```

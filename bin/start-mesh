@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# bin/start-kong-mesh
+
+set -e
+
+export KONG_ORIGINS=http://0.0.0.0:$PORT=http://localhost:5000
+
+bin/heroku-buildpack-kong-web
