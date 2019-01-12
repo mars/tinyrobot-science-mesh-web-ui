@@ -47,9 +47,10 @@ git push heroku master
 
 Then, create the mesh service & route:
 
+(Note: port 5000 is the local listener set in bin/start-app)
+
 ```bash
 ## Create mesh service
-#  (Note: port 5000 is the local listener set in bin/start-app)
 curl -X "PUT" "https://tinyrobot-science-mesh-control.herokuapp.com/kong-admin/services/web-ui" \
      -H 'apikey: xxxxx' \
      -H 'Content-Type: application/json; charset=utf-8' \
@@ -70,6 +71,9 @@ curl -X "POST" "https://tinyrobot-science-mesh-control.herokuapp.com/kong-admin/
     "https"
   ]
 }'
+
+## Add the current app name as the origin for the web-ui services
+heroku config:set KONG_ORIGINS=https://tinyrobot-science-mesh-web-ui.herokuapp.com:443=http://localhost:5000
 ```
 
 ✨ Visit the app's URL `https://tinyrobot-science-mesh-web-ui.herokuapp.com/` in a web browser.
