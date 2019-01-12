@@ -1,33 +1,25 @@
-#  🤖🔬 tinyrobot.science Web UI
+#  🚧🔬 tinyrobot.science "Kong 1.0 Mesh" experiment
 
-Built with [Next.js](https://nextjs.org/) on Heroku.
+*Based on [this microservices example app](https://github.com/mars/tinyrobot-science-web-ui).*
 
-### Part of a reference suite
+Let's discover how Kong's new sidecar deployment style integrates with Heroku.
 
-| [Terraform config](https://github.com/mars/tinyrobot-science-terraform) | Web UI | [API](https://github.com/mars/tinyrobot-science-api) |
-|-----------|------------|---------|
-| infrastructure | front-end app (this repo) | backend app |
+## Results
 
-## Requires
+Kong's actual mesh networking (service-to-service, mutual TLS) features are [facilitated by changing `iptables`](https://docs.konghq.com/1.0.x/streams-and-service-mesh/#step-7-configure-transparent-proxying-rules) configuration on the hosts, which is not possible on Heroku.
 
-* Heroku
-  * [command-line tools (CLI)](https://devcenter.heroku.com/articles/heroku-command-line)
-  * [a free account](https://signup.heroku.com)
-* [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-* [Node.js](https://nodejs.org)
-* [Next.js](https://github.com/zeit/next.js)
+Even without the true mesh networking, deploying Kong sidecar-style does still provide some benefits:
 
-## Development
+- less latency than a separate Kong proxy app (the proxy-backend connection is on localhost)
+- Kong cluster inherently scales with the app's dyno scaling
 
-`git clone` this repo to your local machine, and then:
+## Open questions
 
-```bash
-cd tinyrobot-science-web-ui/
-npm install
-API_URL=http://127.0.0.1:5001 npm run dev
-```
+Can a single Kong controller operate many apps worth of Kong sidecars?
+  - Do backend `PORT` values conflict?
+  - Does the [`KONG_ORIGINS` config](https://docs.konghq.com/1.0.x/streams-and-service-mesh/#the-origins-configuration-option) solve this? (Setting hostnames into config vars is gross 😣)
 
-## Mesh deployment
+## Deployment
 
 First, [deploy a Kong app](https://github.com/heroku/heroku-kong) as the mesh controller.
 
