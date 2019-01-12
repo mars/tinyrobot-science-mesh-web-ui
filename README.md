@@ -44,3 +44,32 @@ heroku addons:attach postgresql-cylindrical-98791
 
 git push heroku master
 ```
+
+Then, create the mesh service & route:
+
+```bash
+## Create mesh service
+#  (Note: port 5000 is the local listener set in bin/start-app)
+curl -X "PUT" "https://tinyrobot-science-mesh-control.herokuapp.com/kong-admin/services/web-ui" \
+     -H 'apikey: xxxxx' \
+     -H 'Content-Type: application/json; charset=utf-8' \
+     -d $'{
+  "url": "http://127.0.0.1:5000"
+}'
+
+## Create mesh route
+curl -X "POST" "https://tinyrobot-science-mesh-control.herokuapp.com/kong-admin/services/web-ui/routes" \
+     -H 'apikey: xxxxx' \
+     -H 'Content-Type: application/json; charset=utf-8' \
+     -d $'{
+  "name": "web-ui",
+  "hosts": [
+    "tinyrobot-science-mesh-web-ui.herokuapp.com"
+  ],
+  "protocols": [
+    "https"
+  ]
+}'
+```
+
+✨ Visit the app's URL `https://tinyrobot-science-mesh-web-ui.herokuapp.com/` in a web browser.
